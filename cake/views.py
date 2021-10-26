@@ -4,4 +4,4 @@ from .forms import ConstructCakeForm
 
 def index(request):
     form = ConstructCakeForm()
-    return render(request, 'index.html',  {'form': form})
+    return render(request, 'index.html', {'form': form})
