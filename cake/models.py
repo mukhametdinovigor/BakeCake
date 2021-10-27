@@ -122,19 +122,17 @@ class Cake(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    berry = models.ForeignKey(
+    berries = models.ManyToManyField(
         Berry,
         related_name='cakes',
         verbose_name='ягоды',
-        on_delete=models.SET_NULL,
-        null=True,
+        blank=True,
     )
-    additional_ingredient = models.ForeignKey(
+    additional_ingredients = models.ManyToManyField(
         AdditionalIngredient,
         related_name='cakes',
         verbose_name='дополнительные ингредиенты',
-        on_delete=models.SET_NULL,
-        null=True,
+        blank=True,
     )
     lettering = models.TextField(
         'подпись',
