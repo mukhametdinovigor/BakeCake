@@ -1,43 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Главная | BakeCake</title>
-	<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" >
-	<link href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/theme.css' %}" rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a href="{% url 'index' %}" title="BakeCake">
-                <img class="img-responsive" src="{% static 'images/logo.png' %}" alt="BakeCake"/>
-            </a>
-		</div>
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
-			<ul class="nav navbar-nav navbar-right" >
-				<li class="active" ><a href="index.html" class="smooth-scroll" >Главная</a></li>
-				<li><a href=#>Регистрация</a></li>
-{#				<li><a href=#></a>Вход</li>#}
-				<li><a href=#>Личный кабинет</a></li>
-			</ul>
-		</div><!-- /.navbar-collapse -->
-	</div><!-- /.container-fluid -->
-</nav>
-
+{% extends 'base.html' %}
+{% block content %}
 <!-- Carousel -->
+{% load static %}
 <div id="theme-carousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -71,23 +35,11 @@
         <div class="carousel-control-arrow">&#8250;</div>
 	</a>
 </div>
-
 <div class="container-contacts">
 	<div class="container">
         <div class="page-header" id="contact">
             <h1 class="text-danger text-center">Создай свой торт</h1>
         </div>
-
-
-{#            <style type="text/css">#}
-{#               div {#}
-{#                   width:80%;#}
-{#                   height:350px;#}
-{#                   margin:0 auto;#}
-{#               }#}
-{#              </style>#}
-
-
            <div class="row">
             <div class="col-md-18" style="padding: 20px;">
                 {% for field in form  %}
@@ -101,10 +53,6 @@
         <div  class="page-header" id="contact">
                <button type="submit" class="btn btn-info" >Торт готов</button>
         </div>
-
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     </div>
 </div>
-</body>
-</html>
+{% endblock %}
