@@ -17,10 +17,13 @@
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
 			<ul class="nav navbar-nav navbar-right" >
-				<li class="active" ><a href="index.html" class="smooth-scroll" >Главная</a></li>
-				<li><a href="{% url 'signup' %}">Регистрация</a></li>
-{#				<li><a href="{% url 'login' %}"></a>Вход</li>#}
-				<li><a href="#">Личный кабинет</a></li>
+        {% if  user.is_authenticated %}
+					<li><a href="#">Личный кабинет</a></li>
+					<li><a href="{% url 'logout' %}">Выйти</a></li>
+				{% else %}
+					<li><a href="{% url 'signup' %}">Регистрация</a></li>
+					<li><a href="{% url 'login' %}">Вход</a></li>
+				{% endif %}
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
