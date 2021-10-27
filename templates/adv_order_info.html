@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1> Стоимость торта - {{ cake_price }}</h1>
+    <div class="row">
+        <h1> Стоимость торта - {{ cake_price }}</h1>
+        <form action="{% url 'index' %}">
+            <div  class="page-header" id="contact">
+                <button type="submit" class="btn btn-info">Выбрать торт заново</button>
+            </div>
+        </form>
+    </div>
 <form action="{% url 'advanced_info' %}" method="post">
 {% csrf_token %}
     <div class="container-contacts">
@@ -19,4 +26,5 @@
         </div>
     </div>
 </form>
+
 {% endblock %}
