@@ -8,7 +8,7 @@ def create_elements():
     models = (Level, Shape, Topping, Berry, AdditionalIngredient)
     elements = dict()
     for model in models:
-        choices = model.objects.values_list()
+        choices = model.objects.values_list().order_by('price')
         elements[model] = choices
     return elements
 
@@ -25,9 +25,9 @@ class ConstructCakeForm(forms.Form):
     levels = forms.ChoiceField(label='Форма уровней', choices=create_choices(elements, Level), widget=forms.RadioSelect)
     shapes = forms.ChoiceField(label='Форма уровней', choices=create_choices(elements, Shape), widget=forms.RadioSelect)
     toppings = forms.ChoiceField(label='Топпинг', choices=create_choices(elements, Topping), widget=forms.RadioSelect)
-    berries = forms.MultipleChoiceField(label='Ягоды', choices=create_choices(elements, Berry), widget=forms.CheckboxSelectMultiple)
-    decor = forms.MultipleChoiceField(label='Декор', choices=create_choices(elements, AdditionalIngredient), widget=forms.CheckboxSelectMultiple)
-    lettering = forms.CharField(label='Мы можем разместить на торте любую надпись, например: «С днем рождения!»', max_length=500)
+    berries = forms.MultipleChoiceField(label='Ягоды', required=False, choices=create_choices(elements, Berry), widget=forms.CheckboxSelectMultiple)
+    decor = forms.MultipleChoiceField(label='Декор', required=False, choices=create_choices(elements, AdditionalIngredient), widget=forms.CheckboxSelectMultiple)
+    lettering = forms.CharField(label='Мы можем разместить на торте любую надпись, например: «С днем рождения!»', required=False, max_length=500)
 
 
 class AdvancedInfoForm(forms.Form):
