@@ -42,7 +42,13 @@ class ConstructCakeForm(forms.Form):
     levels = forms.ChoiceField(label='Количество уровней', choices=LEVEL_CHOICES, widget=forms.RadioSelect)
     level_shapes = forms.ChoiceField(label='Форма уровней', choices=LEVEL_SHAPES, widget=forms.RadioSelect)
     toppings = forms.ChoiceField(label='Топпинг', choices=TOPPINGS, widget=forms.RadioSelect)
-    berries = forms.ChoiceField(label='Ягоды', choices=BERRIES, widget=forms.CheckboxSelectMultiple)
-    decor = forms.ChoiceField(label='Декор', choices=DECOR, widget=forms.CheckboxSelectMultiple)
-    lettering = forms.CharField(label='Мы можем разместить на торте любую надпись, например: «С днем рождения!»', max_length=300)
+    berries = forms.MultipleChoiceField(label='Ягоды', choices=BERRIES, widget=forms.CheckboxSelectMultiple)
+    decor = forms.MultipleChoiceField(label='Декор', choices=DECOR, widget=forms.CheckboxSelectMultiple)
+    lettering = forms.CharField(label='Мы можем разместить на торте любую надпись, например: «С днем рождения!»', max_length=500)
 
+
+class AdvancedInfoForm(forms.Form):
+    order_comment = forms.CharField(label='Комментарий к заказу', max_length=500, widget=forms.TextInput)
+    address = forms.CharField(label='Адрес доставки', max_length=500)
+    date = forms.DateField(label='Дата доставки', widget=forms.DateInput)
+    time = forms.TimeField(label='Время доставки')

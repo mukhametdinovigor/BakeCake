@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1> Стоимость торта - {{ cake_price }}</h1>
+<form action="{% url 'advanced_info' %}" method="post">
+{% csrf_token %}
+    <div class="container-contacts">
+        <div class="container">
+            <div class="page-header" id="contact">
+                <h1 class="text-danger text-center">Дополнительная информация</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-18" style="padding: 20px;">
+                    {{ form }}
+                </div>
+                <div  class="page-header" id="contact">
+                       <button type="submit" class="btn btn-info">Подтвердить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

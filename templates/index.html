@@ -35,6 +35,8 @@
         <div class="carousel-control-arrow">&#8250;</div>
 	</a>
 </div>
+<form action="{% url 'advanced_info' %}" method="post">
+{% csrf_token %}
 <div class="container-contacts">
 	<div class="container">
         <div class="page-header" id="contact">
@@ -51,8 +53,9 @@
 
          </div>
         <div  class="page-header" id="contact">
-               <button type="submit" class="btn btn-info" >Торт готов</button>
+               <button type="submit" class="btn btn-info">Торт готов</button>
         </div>
     </div>
 </div>
+</form>
 {% endblock %}
