@@ -6,9 +6,8 @@
 
 {% block content %}
 
-
-<div class="d-flex justify-content-center"> 
-    <div class="col-md-5">
+<div class="row d-flex justify-content-center"> 
+    <div class="col-md-3">
         {% bootstrap_messages %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
@@ -20,7 +19,6 @@
         </form>
     </div>
 </div>
-
 
 {# Assumes you setup the password_reset view in your URLconf #}
 {# <p><a href="{% url 'index' %}">Lost password?</a></p> #}

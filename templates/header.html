@@ -1,5 +1,47 @@
 {% load static %}
-<header>
+
+  <nav class="navbar navbar-expand-md navbar-light bg-light navbar-fixed-top">
+    <div class="container">
+      	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navmenu">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+  			<a href="{% url 'index' %}" title="BakeCake">
+            <img class="img-responsive" src="{% static 'images/logo.png' %}" alt="BakeCake"/>
+        </a>
+
+      <div class="collapse navbar-collapse" id="navmenu">
+        {% if user.is_authenticated %}
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                  Личный кабинет
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'logout' %}" class="nav-link">
+                  Выход
+              </a>
+            </li>
+          </ul>
+        {% else %}
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+              <a href="{% url 'login' %}" class="nav-link">
+                  Вход
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'signup' %}" class="nav-link">
+                  Регистрация
+              </a>
+            </li>
+          </ul>
+        {% endif %}
+    	</div>
+  	</div>
+	</nav>
+{% comment %}
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -28,4 +70,4 @@
 		    </div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-</header>
+{% endcomment %}
