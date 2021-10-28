@@ -58,15 +58,11 @@ def advanced_info(request):
 
 
 class LoginUserView(LoginView):
-    def get(self, request):
-        if request.session['cake_cleaned_data']:
-            form = UserLoginForm()
-            return render(request, 'registration/login.html', {'form': form})
-        else:
-            return render(request, 'index.html')
-
     def get_success_url(self):
-        return reverse('advanced_info')
+        if self.request.session.get('cake_cleaned_data'):
+            return reverse('advanced_info')
+        else:
+            return reverse('index')
 
 
 class SignupUserView(View):
@@ -84,4 +80,7 @@ class SignupUserView(View):
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
         login(request, user)
-        return redirect('index')
+        if request.session.get('cake_cleaned_data'):
+            return redirect('advanced_info')
+        else:
+            return redirect('index')
