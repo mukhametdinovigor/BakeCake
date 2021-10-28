@@ -22,6 +22,7 @@ def get_price(ingredients):
 
 
 def index(request):
+    request.session.pop('cake_price', None)
     form = ConstructCakeForm()
     return render(request, 'index.html', {'form': form})
 
@@ -55,6 +56,10 @@ def advanced_info(request):
         return render(request, 'adv_order_info.html', {'form': advanced_form,
                                                        'cake_price': cake_price,
                                                        })
+
+
+def confirm(request):
+    return render(request, 'confirmation.html')
 
 
 class LoginUserView(LoginView):

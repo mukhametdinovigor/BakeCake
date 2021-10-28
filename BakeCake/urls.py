@@ -12,7 +12,8 @@ urlpatterns = [
     path('login/', views.LoginUserView.as_view(authentication_form=UserLoginForm), name='login'),
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
     path('signup/', views.SignupUserView.as_view(), name='signup'),
-    path('advanced', views.advanced_info, name='advanced_info'),
+    path('advanced/', views.advanced_info, name='advanced_info'),
+    path('confirm/', views.confirm, name='confirm'),
 ]
 
 

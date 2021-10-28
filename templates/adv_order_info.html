@@ -9,18 +9,14 @@
         </form>
     </div>
     {% if not user.is_authenticated %}
-
         <form action="{% url 'login' %}" >
-{#        <input type="hidden" name="name" value={{ cake_price }}>#}
-{#        <input type="hidden" name="nasdf" value={{cake_cleaned_data }}>#}
         <button type="submit" class="btn btn-info">Вход</button>
-
         <p>Чтобы сделать заказ, зарегистрируйтесь - <a href="{% url 'signup' %}">Регистрация</a></p>
         <p>Или войдите - <a href="{% url 'login' %}">Вход</a></p>
         <p>{{ cake_cleaned_data }}</p>
         </form>
-    {% endif %}
-<form action="{% url 'advanced_info' %}" method="post">
+    {% else %}
+<form action="{% url 'confirm' %}" method="post">
 {% csrf_token %}
     <div class="container-contacts">
         <div class="container">
@@ -38,5 +34,6 @@
         </div>
     </div>
 </form>
+    {% endif %}
 
 {% endblock %}
