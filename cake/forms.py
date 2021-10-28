@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
-from .models import Customer, Level, Shape, Topping, Berry, AdditionalIngredient
+from .models import Customer, Level, Shape, Topping, Berry, AdditionalIngredient, Order
 
 
 def create_elements():
@@ -30,11 +30,27 @@ class ConstructCakeForm(forms.Form):
     lettering = forms.CharField(label='Мы можем разместить на торте любую надпись, например: «С днем рождения!»', required=False, max_length=500)
 
 
-class AdvancedInfoForm(forms.Form):
+class AdvancedInfoForm(forms.ModelForm):
+    def __init__(self,  *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # init is used for other fields initialization and crispy forms
+
+    class Meta:
+        model = Order
+        fields = ['delivered_at', 'delivery_time']
+
+        widgets = {
+            'delivered_at': forms.DateInput(
+                format=('%d/%m/%Y'),
+                attrs={'class': 'form-control',
+                       'placeholder': 'Select a date',
+                       'type': 'date'  # <--- IF I REMOVE THIS LINE, THE INITIAL VALUE IS DISPLAYED
+                       }),
+            'delivery_time': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
     order_comment = forms.CharField(label='Комментарий к заказу', max_length=500, widget=forms.TextInput)
-    address = forms.CharField(label='Адрес доставки', max_length=500)
-    date = forms.DateField(label='Дата доставки', widget=forms.DateInput)
-    time = forms.TimeField(label='Время доставки')
+    address = forms.CharField(label='Адрес доставки', max_length=500, initial='')
 
 
 class UserLoginForm(AuthenticationForm):
