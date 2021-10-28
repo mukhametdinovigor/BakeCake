@@ -31,10 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_tools',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
+    # 'fluent_dashboard',
+    # 'admin_tools_stats',
+    # 'admin_tools',
+    # 'admin_tools.theming',
+    # 'admin_tools.menu',
+    # 'admin_tools.dashboard',
+    # 'django_nvd3',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,8 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
-    'cake.apps.CakeConfig',
+    'cake',
     'phonenumber_field',
+    # 'djangobower',
 ]
 
 MIDDLEWARE = [
@@ -61,8 +65,8 @@ ROOT_URLCONF = 'BakeCake.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': False,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -70,11 +74,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-                'admin_tools.template_loaders.Loader',
-            ],
+            # 'loaders': [
+            #     'django.template.loaders.filesystem.Loader',
+            #     'django.template.loaders.app_directories.Loader',
+            #     'admin_tools.template_loaders.Loader',
+            # ],
         },
     },
 ]
@@ -89,7 +93,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
 }
 
 
@@ -132,7 +136,7 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -144,3 +148,30 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'cake.Customer'
+
+# Specifie path to components root (you need to use absolute path)
+
+# BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+
+
+# BOWER_INSTALLED_APPS = (
+    # 'jquery#2.0.3',
+    # 'jquery-ui#~1.10.3',
+#     'd3#3.3.13',
+#     'nvd3#1.7.1',
+# )
+
+# STATICFILES_FINDERS = (
+#     'djangobower.finders.BowerFinder',
+# )
+
+# ADMIN_TOOLS_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentIndexDashboard'
+# ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentAppIndexDashboard'
+# ADMIN_TOOLS_MENU = 'fluent_dashboard.menu.FluentMenu'
+
+# ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+# ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
+
+# ADMIN_CHARTS_NVD3_JS_PATH = 'bow/nvd3/build/nv.d3.js'
+# ADMIN_CHARTS_NVD3_CSS_PATH = 'bow/nvd3/build/nv.d3.css'
+# ADMIN_CHARTS_D3_JS_PATH = 'bow/d3/d3.js'

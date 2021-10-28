@@ -8,7 +8,7 @@ from cake import views
 
 
 urlpatterns = [
-    path('admin_tools/', include('admin_tools.urls')),
+    # path('admin_tools/', include('admin_tools.urls')),
     path('admin/', admin.site.urls, name='admin'),
     path('', views.index, name='index'),
     path('login/', views.LoginUserView.as_view(authentication_form=UserLoginForm), name='login'),
