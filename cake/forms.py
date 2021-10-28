@@ -16,7 +16,7 @@ def create_elements():
 def create_choices(elements, model):
     choices = []
     for choice in elements[model]:
-        choices.append((f'{choice[2]}', f'{choice[1]} + {choice[2]} руб.'))
+        choices.append((f'{choice[0]} + {choice[2]}', f'{choice[1]} + {choice[2]} руб.'))
     return choices
 
 
