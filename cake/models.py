@@ -194,13 +194,13 @@ class Order(models.Model):
         default=timezone.now,
         db_index=True,
     )
-    delivered_at = models.DateTimeField(
-        'доставлен в',
+    delivered_at = models.DateField(
+        'дата доставки',
         blank=True,
         null=True,
         db_index=True,
     )
-    delivery_time = models.DateTimeField(
+    delivery_time = models.TimeField(
         'время доставки',
         db_index=True,
     )
