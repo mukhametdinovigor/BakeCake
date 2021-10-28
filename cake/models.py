@@ -224,6 +224,14 @@ class Order(models.Model):
         on_delete=models.CASCADE,
     )
 
+    cake = models.ForeignKey(
+        Cake,
+        related_name='orders',
+        verbose_name='торт',
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+
     class Meta:
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
