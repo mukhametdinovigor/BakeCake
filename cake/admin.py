@@ -1,4 +1,9 @@
+import json
+
 from django.contrib import admin
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Count, Sum
+from django.db.models.functions import TruncDay
 
 from .models import (
     Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order
@@ -32,19 +37,29 @@ class AdditionalIngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Cake)
 class CakeAdmin(admin.ModelAdmin):
-    # inlines = [
-    #     LevelInline,
-    #     ShapeInline,
-    #     ToppingInline,
-    #     BerryInline,
-    #     AdditionalIngredientInline,
-    # ]
+    # def changelist_view(self, request, extra_context=None):
+    #     chart_data = 
     pass
-
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    pass
+    # pass
+    def changelist_view(self, request, extra_context=None):
+        chart_data = (
+            Customer.objects.annotate(date=TruncDay('date_joined'))
+            .values('date')
+            .annotate(y=Count('id'))
+            .order_by('-date')
+        )
+
+        aa_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
+        total_customers = Customer.objects.count()
+        print(total_customers)
+        extra_context = extra_context or {
+            'chart_data': aa_json, 'total_customers': total_customers,
+        }
+
+        return super().changelist_view(request, extra_context=extra_context)
 
 
 @admin.register(Order)
