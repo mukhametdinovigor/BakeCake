@@ -1,4 +1,5 @@
 import json
+import tablib
 
 from django.contrib import admin
 from django.core.serializers.json import DjangoJSONEncoder
@@ -107,19 +108,35 @@ class OrderResource(resources.ModelResource):
     class Meta:
         model = Order
 
+    def export(self, queryset=None, *args, **kwargs):
+        labels, stati_count = get_order_queryser()
+
+        data = tablib.Dataset(headers=labels)
+        data.append(stati_count)
+
+        self.after_export(queryset, data, *args, **kwargs)
+
+        return data
+
+
+def get_order_queryser():
+    order_stati = (
+        Order.objects
+        .values_list('status')
+        .annotate(stati_count=Count('status'))
+    )
+
+    stati, stati_count = zip(*order_stati)
+    labels = [dict(STATUS).get(label) for label in stati]
+    return labels, stati_count
+
 
 @admin.register(Order)
 class OrderAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = OrderResource
 
     def changelist_view(self, request, extra_context=None):
-        order_stati = (
-            Order.objects
-            .values_list('status')
-            .annotate(stati_count=Count('status'))
-        )
-        stati, stati_count = zip(*order_stati)
-        labels = [dict(STATUS).get(label) for label in stati]
+        labels, stati_count = get_order_queryser()
 
         charts_labels = json.dumps(labels, cls=DjangoJSONEncoder)
         charts_data = json.dumps(stati_count, cls=DjangoJSONEncoder)
