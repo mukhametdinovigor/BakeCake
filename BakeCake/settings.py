@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'cake',
     'phonenumber_field',
+    'import_export',
 ]
 
 MIDDLEWARE = [

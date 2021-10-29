@@ -2,8 +2,10 @@ import json
 
 from django.contrib import admin
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Sum
+from django.db.models import Count
 from django.db.models.functions import TruncDay
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin, ImportExportMixin, ExportMixin, ExportActionMixin, ImportExportModelAdmin
 
 from .models import (
     Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order, STATUS
@@ -101,8 +103,15 @@ class CustomerAdmin(admin.ModelAdmin):
         return super().changelist_view(request, extra_context=extra_context)
 
 
+class OrderResource(resources.ModelResource):
+    class Meta:
+        model = Order
+
+
 @admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = OrderResource
+
     def changelist_view(self, request, extra_context=None):
         order_stati = (
             Order.objects
@@ -115,6 +124,10 @@ class OrderAdmin(admin.ModelAdmin):
         charts_labels = json.dumps(labels, cls=DjangoJSONEncoder)
         charts_data = json.dumps(stati_count, cls=DjangoJSONEncoder)
 
-        extra_context = extra_context or {'data': charts_data, 'labels': charts_labels}
+        extra_context = extra_context or {
+            'data': charts_data,
+            'labels': charts_labels,
+            'extend_url': 'admin/cake/order/change_list.html',
+        }
 
         return super().changelist_view(request, extra_context=extra_context)
