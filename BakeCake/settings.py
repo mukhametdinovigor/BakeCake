@@ -31,13 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'fluent_dashboard',
-    # 'admin_tools_stats',
-    # 'admin_tools',
-    # 'admin_tools.theming',
-    # 'admin_tools.menu',
-    # 'admin_tools.dashboard',
-    # 'django_nvd3',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,7 +40,6 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'cake',
     'phonenumber_field',
-    # 'djangobower',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'BakeCake.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -74,15 +67,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            # 'loaders': [
-            #     'django.template.loaders.filesystem.Loader',
-            #     'django.template.loaders.app_directories.Loader',
-            #     'admin_tools.template_loaders.Loader',
-            # ],
         },
     },
 ]
-
 WSGI_APPLICATION = 'BakeCake.wsgi.application'
 
 
@@ -148,30 +135,3 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'cake.Customer'
-
-# Specifie path to components root (you need to use absolute path)
-
-# BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
-
-
-# BOWER_INSTALLED_APPS = (
-    # 'jquery#2.0.3',
-    # 'jquery-ui#~1.10.3',
-#     'd3#3.3.13',
-#     'nvd3#1.7.1',
-# )
-
-# STATICFILES_FINDERS = (
-#     'djangobower.finders.BowerFinder',
-# )
-
-# ADMIN_TOOLS_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentIndexDashboard'
-# ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentAppIndexDashboard'
-# ADMIN_TOOLS_MENU = 'fluent_dashboard.menu.FluentMenu'
-
-# ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
-# ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
-
-# ADMIN_CHARTS_NVD3_JS_PATH = 'bow/nvd3/build/nv.d3.js'
-# ADMIN_CHARTS_NVD3_CSS_PATH = 'bow/nvd3/build/nv.d3.css'
-# ADMIN_CHARTS_D3_JS_PATH = 'bow/d3/d3.js'
