@@ -6,6 +6,15 @@ from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+STATUS = (
+    ('PENDING', 'Заявка обрабатывается'),
+    ('COOKED', 'Торт готовится'),
+    ('EN_ROUTE', 'Торт в пути'),
+    ('COMPLETED', 'Выполнен'),
+    ('CANCELED', 'Отменен'),
+)
+
+
 class Level(models.Model):
     levels_count = models.PositiveSmallIntegerField(
         'число уровней',
@@ -174,14 +183,6 @@ class Customer(AbstractUser):
 
 
 class Order(models.Model):
-    STATUS = (
-        ('PENDING', 'Заявка обрабатывается'),
-        ('COOKED', 'Торт готовится'),
-        ('EN_ROUTE', 'Торт в пути'),
-        ('COMPLETED', 'Выполнен'),
-        ('CANCELED', 'Отменен'),
-    )
-
     status = models.CharField(
         'статус',
         max_length=20,

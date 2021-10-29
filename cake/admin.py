@@ -6,7 +6,7 @@ from django.db.models import Count, Sum
 from django.db.models.functions import TruncDay
 
 from .models import (
-    Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order
+    Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order, STATUS
 )
 
 
@@ -39,7 +39,7 @@ class AdditionalIngredientAdmin(admin.ModelAdmin):
 class CakeAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         charts_data = get_charts_data(Cake)
-        ingredients, ingredients_count = tuple(zip(*charts_data))
+        ingredients, ingredients_count = zip(*charts_data)
 
         charts_data = json.dumps(ingredients_count, cls=DjangoJSONEncoder)
         charts_labels = json.dumps(ingredients, cls=DjangoJSONEncoder)
@@ -83,7 +83,6 @@ def get_charts_data(model):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    # pass
     def changelist_view(self, request, extra_context=None):
         chart_data = (
             Customer.objects.annotate(date=TruncDay('date_joined'))
@@ -104,4 +103,18 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    def changelist_view(self, request, extra_context=None):
+        order_stati = (
+            Order.objects
+            .values_list('status')
+            .annotate(stati_count=Count('status'))
+        )
+        stati, stati_count = zip(*order_stati)
+        labels = [dict(STATUS).get(label) for label in stati]
+
+        charts_labels = json.dumps(labels, cls=DjangoJSONEncoder)
+        charts_data = json.dumps(stati_count, cls=DjangoJSONEncoder)
+
+        extra_context = extra_context or {'data': charts_data, 'labels': charts_labels}
+
+        return super().changelist_view(request, extra_context=extra_context)
