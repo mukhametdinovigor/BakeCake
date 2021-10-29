@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import ConstructCakeForm, AdvancedInfoForm
 from .forms import UserCreationWithEmailForm, UserLoginForm
+from .models import *
 
 
 LETTERING_PRICE = 500
@@ -59,7 +60,38 @@ def advanced_info(request):
 
 
 def confirm(request):
+    cake_cleaned_data = request.session['cake_cleaned_data']
+    # cake, created = Cake.objects.get_or_create(
+    #     level=level,
+    #     shape=shape,
+    #     topping=topping,
+    #     berries__in=berrieses,
+    #     defaults={'berries': berrieses},
+    #     additional_ingredients__in=additionals_ingredients,
+    #     defaults={'additional_ingredients': additionals_ingredients},
+    #     lettering=lettering
+    #     lettering_cost=
+    # )
+
+    additional_form = AdvancedInfoForm(request.POST)
+    # if additional_form.is_valid():
+    #     delivered_at = additional_form.cleaned_data.get('delivered_at')
+    #     delivery_time = additional_form.cleaned_data.get('delivery_time')
+    #     comment = additional_form.cleaned_data.get('order_comment')
+    #     order, created = Order.objects.get_or_create(
+    #         delivered_at=delivered_at,
+    #         delivery_time=delivery_time,
+    #         comment=comment,
+    #         total_price=1,
+    #         customer=1,
+    #         cake=1,
+
+        # )
     return render(request, 'confirmation.html')
+
+
+def account(request):
+    return render(request, 'account.html')
 
 
 class LoginUserView(LoginView):
