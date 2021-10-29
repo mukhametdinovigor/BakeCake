@@ -1,16 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
 from django.contrib.sessions.models import Session
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 
 from .forms import ConstructCakeForm, AdvancedInfoForm
-from .forms import UserCreationWithEmailForm, UserLoginForm
+from .forms import UserCreationWithEmailForm
 from .models import *
-
 
 LETTERING_PRICE = 500
 
@@ -20,6 +17,27 @@ def get_price(ingredients):
     for ingredient in ingredients:
         price += float(ingredient.split('+')[1].strip())
     return price
+
+
+def get_ids_from_cake_order(elements):
+    objects = []
+    for element in elements:
+        obj_id = int(element.split('+')[0].strip())
+        objects.append(obj_id)
+    return objects
+
+
+def get_order_objects(cake_cleaned_data):
+    level_id = int(cake_cleaned_data['levels'].split('+')[0].strip())
+    level = get_object_or_404(Level, id=level_id)
+    shape_id = int(cake_cleaned_data['shapes'].split('+')[0].strip())
+    shape = get_object_or_404(Shape, id=shape_id)
+    topping_id = int(cake_cleaned_data['toppings'].split('+')[0].strip())
+    topping = get_object_or_404(Topping, id=topping_id)
+    berry_ids = get_ids_from_cake_order(cake_cleaned_data['berries'])
+    decor_ids = get_ids_from_cake_order(cake_cleaned_data['decor'])
+    lettering = cake_cleaned_data['lettering']
+    return level, shape, topping, berry_ids, decor_ids, lettering
 
 
 def index(request):
@@ -60,33 +78,36 @@ def advanced_info(request):
 
 
 def confirm(request):
+    global LETTERING_PRICE
     cake_cleaned_data = request.session['cake_cleaned_data']
-    # cake, created = Cake.objects.get_or_create(
-    #     level=level,
-    #     shape=shape,
-    #     topping=topping,
-    #     berries__in=berrieses,
-    #     defaults={'berries': berrieses},
-    #     additional_ingredients__in=additionals_ingredients,
-    #     defaults={'additional_ingredients': additionals_ingredients},
-    #     lettering=lettering
-    #     lettering_cost=
-    # )
+    level, shape, topping, berry_ids, decor_ids, lettering = get_order_objects(cake_cleaned_data)
+    if not lettering:
+        LETTERING_PRICE = 0
+    cake, created = Cake.objects.get_or_create(
+        level=level,
+        shape=shape,
+        topping=topping,
+        lettering=lettering,
+        lettering_cost=LETTERING_PRICE
+    )
+    for berry_id in berry_ids:
+        cake.berries.add(berry_id)
+    for decor_id in decor_ids:
+        cake.additional_ingredients.add(decor_id)
+    cake.save()
 
     additional_form = AdvancedInfoForm(request.POST)
-    # if additional_form.is_valid():
-    #     delivered_at = additional_form.cleaned_data.get('delivered_at')
-    #     delivery_time = additional_form.cleaned_data.get('delivery_time')
-    #     comment = additional_form.cleaned_data.get('order_comment')
-    #     order, created = Order.objects.get_or_create(
-    #         delivered_at=delivered_at,
-    #         delivery_time=delivery_time,
-    #         comment=comment,
-    #         total_price=1,
-    #         customer=1,
-    #         cake=1,
-
-        # )
+    customer = get_object_or_404(Customer, id=request.user.id)
+    if additional_form.is_valid():
+        delivery_time = additional_form.cleaned_data.get('delivery_time')
+        comment = additional_form.cleaned_data.get('order_comment')
+        order, created = Order.objects.get_or_create(
+            delivery_time=delivery_time,
+            comment=comment,
+            total_price=request.session.get('cake_price'),
+            customer=customer,
+            cake=cake
+        )
     return render(request, 'confirmation.html')
 
 
