@@ -33,20 +33,16 @@ class ConstructCakeForm(forms.Form):
 class AdvancedInfoForm(forms.ModelForm):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # init is used for other fields initialization and crispy forms
 
     class Meta:
         model = Order
-        fields = ['delivered_at', 'delivery_time']
-
+        fields = ['delivery_time']
         widgets = {
-            'delivered_at': forms.DateInput(
-                format=('%d/%m/%Y'),
-                attrs={'class': 'form-control',
-                       'placeholder': 'Select a date',
-                       'type': 'date'  # <--- IF I REMOVE THIS LINE, THE INITIAL VALUE IS DISPLAYED
+            'delivery_time': forms.DateTimeInput(
+                format=('%d-%m-%YT%H:%M'),
+                attrs={
+                       'type': 'datetime-local'
                        }),
-            'delivery_time': forms.TimeInput(attrs={'type': 'time'}),
         }
 
     order_comment = forms.CharField(label='Комментарий к заказу', max_length=500, widget=forms.TextInput)
