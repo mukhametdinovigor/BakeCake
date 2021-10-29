@@ -37,46 +37,65 @@ class AdditionalIngredientAdmin(admin.ModelAdmin):
     pass
 
 
+class CakeResource(resources.ModelResource):
+    class Meta:
+        model = Cake
+
+    def export(self, queryset=None, *args, **kwargs):
+        cake_stats = get_cake_stats()
+        ingredients, ingredients_count = zip(*cake_stats)
+
+        export_stats = tablib.Dataset(headers=ingredients)
+        export_stats.append(ingredients_count)
+        return export_stats
+
+
 @admin.register(Cake)
-class CakeAdmin(admin.ModelAdmin):
+class CakeAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = CakeResource
+
     def changelist_view(self, request, extra_context=None):
-        charts_data = get_charts_data(Cake)
-        ingredients, ingredients_count = zip(*charts_data)
+        cake_stats = get_cake_stats()
+        ingredients, ingredients_count = zip(*cake_stats)
 
         charts_data = json.dumps(ingredients_count, cls=DjangoJSONEncoder)
         charts_labels = json.dumps(ingredients, cls=DjangoJSONEncoder)
-        extra_context = extra_context or {'data': charts_data, 'labels': charts_labels}
+        extra_context = extra_context or {
+            'data': charts_data,
+            'labels': charts_labels,
+            'extend_url': 'admin/cake/cake/change_list.html',
+        }
         return super().changelist_view(request, extra_context=extra_context)
 
 
-def get_charts_data(model):
-    objects = model.objects.all()
+def get_cake_stats():
+    cakes = Cake.objects.all()
     yield from (
-        objects
+        cakes
         .values_list('level__levels_count')
         .annotate(levels=Count('id'))
         .order_by()
     )
     yield from (
-        objects
+        cakes
         .values_list('topping__name')
         .annotate(toppings_count=Count('id'))
         .order_by()
     )
     yield from (
-        objects
+        cakes
         .values_list('shape__figure')
         .annotate(shapes_count=Count('id'))
         .order_by()
     )
     yield from (
-        objects
+        cakes
         .values_list('berries__name')
         .annotate(berries_count=Count('id'))
         .order_by()
     )
     yield from (
-        objects
+        cakes
         .values_list('additional_ingredients__name')
         .annotate(additional_ingredients_count=Count('id'))
         .order_by()
