@@ -47,7 +47,11 @@ def index(request):
 
 
 def advanced_info(request):
-    advanced_form = AdvancedInfoForm()
+    if request.user.pk:
+        customer = get_object_or_404(Customer, id=request.user.id)
+        advanced_form = AdvancedInfoForm(initial={'address': customer.address})
+    else:
+        advanced_form = AdvancedInfoForm()
     if not request.session.session_key:
         request.session.save()
     try:
@@ -101,6 +105,7 @@ def confirm(request):
     if additional_form.is_valid():
         delivery_time = additional_form.cleaned_data.get('delivery_time')
         comment = additional_form.cleaned_data.get('order_comment')
+        address = additional_form.cleaned_data.get('address')
         order, created = Order.objects.get_or_create(
             delivery_time=delivery_time,
             comment=comment,
@@ -108,6 +113,8 @@ def confirm(request):
             customer=customer,
             cake=cake
         )
+        customer.address = address
+        customer.save()
     return render(request, 'confirmation.html')
 
 
