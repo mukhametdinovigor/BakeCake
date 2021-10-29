@@ -10,12 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('myChart').getContext('2d');
 
   // Sample data
-  const chartData = {{ chart_data | safe }};
 
-  // Parse the dates to JS
-  chartData.forEach((d) => {
-    d.x = new Date(d.date);
-  });
 
   // Render the chart
   const chart = new Chart(ctx, {
@@ -23,26 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
     data: {
       datasets: [
         {
-          label: 'new customers',
-          data: chartData,
+          label: 'Ингредиенты',
+          data: {{data | safe}},
           backgroundColor: 'rgba(220,20,20,0.5)',
         },
       ],
+      labels: {{labels | safe}}
     },
     options: {
       responsive: true,
       scales: {
         xAxes: [
-          {
-            type: 'time',
-            time: {
-              unit: 'day',
-              round: 'day',
-              displayFormats: {
-                day: 'MMM D',
-              },
-            },
-          },
+
         ],
         yAxes: [
           {

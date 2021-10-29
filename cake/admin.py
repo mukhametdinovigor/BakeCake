@@ -37,9 +37,55 @@ class AdditionalIngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Cake)
 class CakeAdmin(admin.ModelAdmin):
-    # def changelist_view(self, request, extra_context=None):
-    #     chart_data = 
-    pass
+    def changelist_view(self, request, extra_context=None):
+        cakes = Cake.objects.all()
+        levels_chart_data = (
+            cakes
+            .values('level__levels_count')
+            .annotate(levels=Count('id'))
+            .order_by()
+        )
+        toppings_chart_data = (
+            cakes
+            .values_list('topping__name')
+            .annotate(toppings_count=Count('id'))
+            .order_by()
+        )
+        shapes_chart_data = (
+            cakes
+            .values('shape__figure')
+            .annotate(shapes_count=Count('id'))
+            .order_by()
+        )
+        berries_chart_data = (
+            cakes
+            .values('berries__name')
+            .annotate(berries_count=Count('id'))
+            .order_by()
+        )
+        additional_ingredients_chart_data = (
+            cakes
+            .values('additional_ingredients__name')
+            .annotate(additional_ingredients_count=Count('id'))
+            .order_by()
+        )
+
+        print(shapes_chart_data)
+        shapes = json.dumps(list(shapes_chart_data), cls=DjangoJSONEncoder)
+        print(shapes)
+        # extra_context = extra_context or {'data': shapes}
+        # print(levels_chart_data)
+        # print(toppings_chart_data)
+        # print(shapes_chart_data)
+        # print(berries_chart_data)
+        # print(additional_ingredients_chart_data)
+        # print(dict(toppings_chart_data).values())
+        labels = json.dumps(list((dict(toppings_chart_data).keys())), cls=DjangoJSONEncoder)
+
+        chart_json = json.dumps(list((dict(toppings_chart_data).values())), cls=DjangoJSONEncoder)
+        extra_context = extra_context or {'data': chart_json, 'labels': labels}
+        return super().changelist_view(request, extra_context=extra_context)
+
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -52,11 +98,11 @@ class CustomerAdmin(admin.ModelAdmin):
             .order_by('-date')
         )
 
-        aa_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
+        chart_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
         total_customers = Customer.objects.count()
-        print(total_customers)
+
         extra_context = extra_context or {
-            'chart_data': aa_json, 'total_customers': total_customers,
+            'chart_data': chart_json, 'total_customers': total_customers,
         }
 
         return super().changelist_view(request, extra_context=extra_context)
