@@ -6,8 +6,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count
 from django.db.models.functions import TruncDay
 from import_export import resources
-from import_export.admin import ImportExportModelAdmin, ImportExportMixin, ExportMixin, ExportActionMixin, ImportExportModelAdmin
-
+from import_export.admin import ExportMixin
 from .models import (
     Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order, STATUS
 )
@@ -84,21 +83,45 @@ def get_charts_data(model):
     )
 
 
+def get_customer_stats():
+    return (
+        Customer.objects.annotate(date=TruncDay('date_joined'))
+        .values('date')
+        .annotate(y=Count('id'))
+        .order_by('-date')
+    )
+
+
+class CustomerResources(resources.ModelResource):
+    class Meta:
+        model = Customer
+
+    def export(self, queryset=None, *args, **kwargs):
+        customer_stats = get_customer_stats()
+        dates, customers_count = zip(*(
+            date_with_stats.values() for date_with_stats in customer_stats
+        ))
+        labels = (date.strftime('%Y-%m-%d') for date in dates)
+
+        export_stats = tablib.Dataset(headers=labels)
+        export_stats.append(customers_count)
+        return export_stats
+
+
 @admin.register(Customer)
-class CustomerAdmin(admin.ModelAdmin):
+class CustomerAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = CustomerResources
+
     def changelist_view(self, request, extra_context=None):
-        chart_data = (
-            Customer.objects.annotate(date=TruncDay('date_joined'))
-            .values('date')
-            .annotate(y=Count('id'))
-            .order_by('-date')
-        )
+        chart_data = get_customer_stats()
 
         chart_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
         total_customers = Customer.objects.count()
 
         extra_context = extra_context or {
-            'chart_data': chart_json, 'total_customers': total_customers,
+            'chart_data': chart_json,
+            'total_customers': total_customers,
+            'extend_url': 'admin/cake/customer/change_list.html',
         }
 
         return super().changelist_view(request, extra_context=extra_context)
@@ -109,17 +132,14 @@ class OrderResource(resources.ModelResource):
         model = Order
 
     def export(self, queryset=None, *args, **kwargs):
-        labels, stati_count = get_order_queryser()
+        labels, stati_count = get_order_stats()
 
-        data = tablib.Dataset(headers=labels)
-        data.append(stati_count)
-
-        self.after_export(queryset, data, *args, **kwargs)
-
-        return data
+        export_stats = tablib.Dataset(headers=labels)
+        export_stats.append(stati_count)
+        return export_stats
 
 
-def get_order_queryser():
+def get_order_stats():
     order_stati = (
         Order.objects
         .values_list('status')
@@ -136,7 +156,7 @@ class OrderAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = OrderResource
 
     def changelist_view(self, request, extra_context=None):
-        labels, stati_count = get_order_queryser()
+        labels, stati_count = get_order_stats()
 
         charts_labels = json.dumps(labels, cls=DjangoJSONEncoder)
         charts_data = json.dumps(stati_count, cls=DjangoJSONEncoder)
