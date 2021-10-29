@@ -9,16 +9,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('myChart').getContext('2d');
 
-  // Sample data
-
-
   // Render the chart
   const chart = new Chart(ctx, {
     type: 'bar',
     data: {
       datasets: [
         {
-          label: 'Ингредиенты',
+          label: 'Выбор пользователей',
           data: {{data | safe}},
           backgroundColor: 'rgba(220,20,20,0.5)',
         },
@@ -35,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             ticks: {
               beginAtZero: true,
+
             },
           },
         ],

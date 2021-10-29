@@ -38,53 +38,47 @@ class AdditionalIngredientAdmin(admin.ModelAdmin):
 @admin.register(Cake)
 class CakeAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
-        cakes = Cake.objects.all()
-        levels_chart_data = (
-            cakes
-            .values('level__levels_count')
-            .annotate(levels=Count('id'))
-            .order_by()
-        )
-        toppings_chart_data = (
-            cakes
-            .values_list('topping__name')
-            .annotate(toppings_count=Count('id'))
-            .order_by()
-        )
-        shapes_chart_data = (
-            cakes
-            .values('shape__figure')
-            .annotate(shapes_count=Count('id'))
-            .order_by()
-        )
-        berries_chart_data = (
-            cakes
-            .values('berries__name')
-            .annotate(berries_count=Count('id'))
-            .order_by()
-        )
-        additional_ingredients_chart_data = (
-            cakes
-            .values('additional_ingredients__name')
-            .annotate(additional_ingredients_count=Count('id'))
-            .order_by()
-        )
+        charts_data = get_charts_data(Cake)
+        ingredients, ingredients_count = tuple(zip(*charts_data))
 
-        print(shapes_chart_data)
-        shapes = json.dumps(list(shapes_chart_data), cls=DjangoJSONEncoder)
-        print(shapes)
-        # extra_context = extra_context or {'data': shapes}
-        # print(levels_chart_data)
-        # print(toppings_chart_data)
-        # print(shapes_chart_data)
-        # print(berries_chart_data)
-        # print(additional_ingredients_chart_data)
-        # print(dict(toppings_chart_data).values())
-        labels = json.dumps(list((dict(toppings_chart_data).keys())), cls=DjangoJSONEncoder)
-
-        chart_json = json.dumps(list((dict(toppings_chart_data).values())), cls=DjangoJSONEncoder)
-        extra_context = extra_context or {'data': chart_json, 'labels': labels}
+        charts_data = json.dumps(ingredients_count, cls=DjangoJSONEncoder)
+        charts_labels = json.dumps(ingredients, cls=DjangoJSONEncoder)
+        extra_context = extra_context or {'data': charts_data, 'labels': charts_labels}
         return super().changelist_view(request, extra_context=extra_context)
+
+
+def get_charts_data(model):
+    objects = model.objects.all()
+    yield from (
+        objects
+        .values_list('level__levels_count')
+        .annotate(levels=Count('id'))
+        .order_by()
+    )
+    yield from (
+        objects
+        .values_list('topping__name')
+        .annotate(toppings_count=Count('id'))
+        .order_by()
+    )
+    yield from (
+        objects
+        .values_list('shape__figure')
+        .annotate(shapes_count=Count('id'))
+        .order_by()
+    )
+    yield from (
+        objects
+        .values_list('berries__name')
+        .annotate(berries_count=Count('id'))
+        .order_by()
+    )
+    yield from (
+        objects
+        .values_list('additional_ingredients__name')
+        .annotate(additional_ingredients_count=Count('id'))
+        .order_by()
+    )
 
 
 @admin.register(Customer)
