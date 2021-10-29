@@ -204,6 +204,8 @@ class Order(models.Model):
     delivery_time = models.DateTimeField(
         'дата и время доставки',
         db_index=True,
+        blank=False,
+        null=False,
     )
 
     comment = models.TextField(
