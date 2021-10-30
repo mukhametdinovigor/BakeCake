@@ -12,7 +12,11 @@
         <form action="{% url 'signup' %}" method="post">
             {% csrf_token %}
             {% bootstrap_form form placeholder='fdg'%}
-            {% bootstrap_button button_type="submit" content="OK" %}
+            <div class="formname">
+                <input id="checkbox" type="checkbox" name="checkbox" onchange="document.getElementById('submit').disabled = !this.checked;" />
+                <label for="checkbox">Я соглашаюсь на предачу <a href="/media/docs/personal_data.pdf" target="_blank" >персональных данных</a></label>
+                {% bootstrap_button button_type="submit" disabled="disabled" name="submit" id="submit" content="OK" %}
+            </div>
         </form>
     </div>
 </div>
