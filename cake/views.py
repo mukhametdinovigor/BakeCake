@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
-from django.contrib.sessions.models import Session
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
@@ -8,8 +7,13 @@ from django.views import View
 from .forms import ConstructCakeForm, AdvancedInfoForm
 from .forms import UserCreationWithEmailForm
 from .models import *
+from environs import Env
 
-LETTERING_PRICE = 500
+
+env = Env()
+env.read_env()
+
+LETTERING_PRICE = env.float('LETTERING_PRICE')
 
 
 def get_price(ingredients):
