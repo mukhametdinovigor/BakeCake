@@ -65,7 +65,7 @@ class UserCreationWithEmailForm(UserCreationForm):
 
     class Meta:
         model = Customer
-        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email', 'phonenumber')
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'address', 'email', 'phonenumber')
 
     def save(self, commit=True):
         user = super(UserCreationWithEmailForm, self).save(commit=False)
@@ -86,6 +86,9 @@ class UserCreationWithEmailForm(UserCreationForm):
 
         self.fields['last_name'].label = 'Фамилия'
         self.fields['last_name'].widget.attrs.update({'placeholder': ''})
+
+        self.fields['address'].label = 'Адрес'
+        self.fields['address'].widget.attrs.update({'placeholder': ''})
 
         self.fields['email'].label = 'Почта'
         self.fields['email'].widget.attrs.update({'placeholder': ''})
