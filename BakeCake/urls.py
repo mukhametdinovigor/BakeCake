@@ -17,6 +17,6 @@ urlpatterns = [
     path('advanced/', views.advanced_info, name='advanced_info'),
     path('confirm/', views.confirm, name='confirm'),
     path('account/', views.account, name='account'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.DOCS_URL, document_root=settings.DOCS_DIR)
 
 
