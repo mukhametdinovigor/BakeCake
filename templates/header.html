@@ -9,15 +9,22 @@
   			<a href="{% url 'index' %}" title="BakeCake">
             <img class="img-responsive" src="{% static 'images/logo.png' %}" alt="BakeCake"/>
         </a>
-
       <div class="collapse navbar-collapse" id="navmenu">
         {% if user.is_authenticated %}
           <ul class="navbar-nav navbar-right">
+
             <li class="nav-item">
-              <a href="{% url 'account' %}" class="nav-link">
-                  Личный кабинет
+              <a href="{% url 'index' %}" class="nav-link">
+                   Добро пожаловать {{ user }} |
               </a>
             </li>
+
+            <li class="nav-item">
+              <a href="{% url 'account' %}" class="nav-link">
+                  Личный кабинет |
+              </a>
+            </li>
+
             <li class="nav-item">
               <a href="{% url 'logout' %}" class="nav-link">
                   Выход
