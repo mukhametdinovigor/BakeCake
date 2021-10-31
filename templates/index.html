@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
 {% block content %}
 <!-- Carousel -->
 {% load static %}
@@ -53,7 +58,7 @@
 
          </div>
         <div  class="page-header" id="contact">
-               <button type="submit" class="btn btn-info">Торт готов</button>
+                {% bootstrap_button button_type="submit" content="Торт готов" %}
         </div>
     </div>
 </div>
