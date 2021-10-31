@@ -1,40 +1,65 @@
 {% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
 {% block content %}
-    <div class="row">
-        <h1> Стоимость торта - {{ cake_price }}</h1>
-        <p>Если доставка в ближайшие 24 часа, то стоимость заказа будет на 20% больше </p>
-        <form action="{% url 'index' %}">
-            <div  class="page-header" id="contact">
-                <button type="submit" class="btn btn-info">Выбрать торт заново</button>
-            </div>
-        </form>
-    </div>
-    {% if not user.is_authenticated %}
-        <form action="{% url 'login' %}" >
-        <button type="submit" class="btn btn-info">Вход</button>
-        <p>Чтобы сделать заказ, зарегистрируйтесь - <a href="{% url 'signup' %}">Регистрация</a></p>
-        <p>Или войдите - <a href="{% url 'login' %}">Вход</a></p>
-        <p>{{ cake_cleaned_data }}</p>
-        </form>
-    {% else %}
-<form action="{% url 'confirm' %}" method="post">
-{% csrf_token %}
     <div class="container-contacts">
         <div class="container">
             <div class="page-header" id="contact">
-                <h1 class="text-danger text-center">Дополнительная информация</h1>
+                <h1 class="text-danger"> Стоимость торта - {{ cake_price }}</h1>
+                <h3 class="text-danger">Если доставка в ближайшие 24 часа, то стоимость заказа будет на 20% больше. </h3>
+                <form action="{% url 'index' %}">
+                    <div  class="page-header" id="contact">
+                        {% bootstrap_button button_type="submit" content="Выбрать торт заново" %}
+                    </div>
+                </form>
             </div>
-            <div class="row">
-                <div class="col-md-18" style="padding: 20px;">
-                    {{ form }}
-                </div>
-                <div  class="page-header" id="contact">
-                       <button type="submit" class="btn btn-info">Подтвердить</button>
+        </div>
+
+    {% if not user.is_authenticated %}
+         <div class="container-contacts">
+            <div class="container">
+                <div class="page-header" id="contact">
+                    <div class="row">
+                        <h1 class="text-danger">Чтобы сделать заказ зарегистрируйтесь или войдите</h1>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="col-md-auto">
+                                 <form action="{% url 'signup' %}" >
+                                    <button type="submit" class="btn btn-info">Регистрация</button>
+                                </form>
+                            </div>
+                            <div class="col-md-auto">
+                                <form action="{% url 'login' %}" >
+                                    <button type="submit" class="btn btn-info">Вход</button>
+                                </form>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
-    {% endif %}
+    {% else %}
 
+        <div class="container-contacts">
+        <div class="container">
+            <div class="page-header" id="contact">
+            <div class="row d-flex justify-content-left">
+                <div class="col-md-auto">
+                    {% bootstrap_messages %}
+                        <h1 class="text-danger text-center">Дополнительная информация</h1>
+                        <br>
+                            <form action="{% url 'confirm' %}" method="post">
+                                {% csrf_token %}
+                                {% bootstrap_form form %}
+                                {% bootstrap_button button_type="submit" content="Подтвердить" %}
+                            </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
 {% endblock %}
