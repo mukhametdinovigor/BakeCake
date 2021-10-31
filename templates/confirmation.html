@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+    <h4>Стоимость торта - {{ cake_price }}</h4>
+    <h4>Наценка за срочный заказ - {{ surcharge }}</h4>
+    <h3>Общая стоимость заказа - {{ cake_price|add:surcharge }}
 <h1> Ваш заказ принят </h1>
+
         <form action="{% url 'index' %}">
             <div  class="page-header" id="contact">
                 <button type="submit" class="btn btn-info">Перейти на главную</button>

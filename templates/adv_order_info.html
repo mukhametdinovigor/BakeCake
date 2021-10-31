@@ -2,6 +2,7 @@
 {% block content %}
     <div class="row">
         <h1> Стоимость торта - {{ cake_price }}</h1>
+        <p>Если доставка в ближайшие 24 часа, то стоимость заказа будет на 20% больше </p>
         <form action="{% url 'index' %}">
             <div  class="page-header" id="contact">
                 <button type="submit" class="btn btn-info">Выбрать торт заново</button>

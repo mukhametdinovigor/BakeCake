@@ -9,6 +9,8 @@ from .forms import UserCreationWithEmailForm
 from .models import *
 from environs import Env
 
+from datetime import timedelta
+
 
 env = Env()
 env.read_env()
@@ -87,6 +89,8 @@ def advanced_info(request):
 
 def confirm(request):
     global LETTERING_PRICE
+    cake_price = request.session.get('cake_price')
+    surcharge = 0
     cake_cleaned_data = request.session['cake_cleaned_data']
     level, shape, topping, berry_ids, decor_ids, lettering = get_order_objects(cake_cleaned_data)
     if not lettering:
@@ -119,10 +123,14 @@ def confirm(request):
         )
         customer.address = address
         customer.save()
-        return render(request, 'confirmation.html')
+        if delivery_time - order.created_at < timedelta(1):
+            surcharge = round(cake_price * 0.2, 2)
+        return render(request, 'confirmation.html', {'cake_price': cake_price,
+                                                     'surcharge': surcharge
+                                                     })
     else:
         return render(request, 'adv_order_info.html', {'form': additional_form,
-                                                       'cake_price': request.session.get('cake_price'),
+                                                       'cake_price': cake_price,
                                                        })
 
 
