@@ -119,7 +119,11 @@ def confirm(request):
         )
         customer.address = address
         customer.save()
-    return render(request, 'confirmation.html')
+        return render(request, 'confirmation.html')
+    else:
+        return render(request, 'adv_order_info.html', {'form': additional_form,
+                                                       'cake_price': request.session.get('cake_price'),
+                                                       })
 
 
 def account(request):

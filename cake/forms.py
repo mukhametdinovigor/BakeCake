@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from .models import Customer, Level, Shape, Topping, Berry, AdditionalIngredient, Order
+from django.utils import timezone
 
 
 def create_elements():
@@ -45,8 +46,15 @@ class AdvancedInfoForm(forms.ModelForm):
                        }),
         }
 
-    order_comment = forms.CharField(label='Комментарий к заказу', max_length=500, widget=forms.TextInput)
+    order_comment = forms.CharField(label='Комментарий к заказу', max_length=500, widget=forms.TextInput, required=False)
     address = forms.CharField(label='Адрес доставки', max_length=500, initial='')
+
+    def clean_delivery_time(self):
+        delivery_time = super(AdvancedInfoForm, self).clean().get('delivery_time')
+
+        if delivery_time < timezone.now():
+            raise forms.ValidationError("День доставки не может быть раньше чем сегодня.")
+        return delivery_time
 
 
 class UserLoginForm(AuthenticationForm):
