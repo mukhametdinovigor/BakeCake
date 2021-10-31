@@ -141,6 +141,13 @@ def account(request):
     return render(request, 'account.html', {'orders': orders})
 
 
+def cancel_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    order.status = 'CANCELED'
+    order.save()
+    return redirect('account')
+
+
 class LoginUserView(LoginView):
     def get_success_url(self):
         if self.request.session.get('cake_cleaned_data'):

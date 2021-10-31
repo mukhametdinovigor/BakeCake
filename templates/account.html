@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block content %}
 <div class="container">
     <center>
@@ -12,6 +15,7 @@
         <th>Время доставки</th>
         <th>Сумма заказа</th>
         <th>Статус</th>
+        <th></th>
       </tr>
       {% for order in orders %}
         <tr>
@@ -22,6 +26,11 @@
           <td>{{ order.delivery_time }}</td>
           <td>{{ order.total_price }}</td>
           <td>{{ order.get_status_display }}</td>
+          {% if order.status == 'PENDING' %}
+            <td>
+              <a class="btn btn-primary"  href="{% url 'cancel_order' order.id%}">Отменить</a>
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
     </table>
