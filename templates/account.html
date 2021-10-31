@@ -7,17 +7,22 @@
     <hr/>
     <table class="table table-responsive">
       <tr>
-        <th>Наименование</th>
-        <th>Адрес</th>
-        <th>Контактный телефон</th>
+        <th>Детали заказа</th>
+        <th>Время заказа</th>
+        <th>Время доставки</th>
+        <th>Сумма заказа</th>
         <th>Статус</th>
       </tr>
-
+      {% for order in orders %}
         <tr>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
-          <td>#</td>
+          {% with cake=order.cake %}
+            <td>{{ cake.level }}, {{ cake.shape }}, {{ cake.topping }}, {% for berry in cake.berries.all %}{{ berry }}, {% endfor %}{% for ingredient in cake.additional_ingredients.all %}{{ ingredient }}, {% endfor %}</td>
+          {% endwith %}
+          <td>{{ order.created_at }}</td>
+          <td>{{ order.delivery_time }}</td>
+          <td>{{ order.total_price }}</td>
+          <td>{{ order.get_status_display }}</td>
         </tr>
+      {% endfor %}
     </table>
 {% endblock %}

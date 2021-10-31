@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
+from django.db.models import Sum, F
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
@@ -135,7 +136,9 @@ def confirm(request):
 
 
 def account(request):
-    return render(request, 'account.html')
+    customer = get_object_or_404(Customer, id=request.user.id)
+    orders = customer.orders.all()
+    return render(request, 'account.html', {'orders': orders})
 
 
 class LoginUserView(LoginView):
