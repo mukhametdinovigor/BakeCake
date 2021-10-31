@@ -3,6 +3,20 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% block datepicker %}
+    <!-- Bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+
+    <!-- Tempus Dominus Bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -28,10 +42,44 @@
         <h1 class="text-danger text-center">Дополнительная информация</h1>
         <form action="{% url 'confirm' %}" method="post">
             {% csrf_token %}
-            {% bootstrap_form form %}
-            {% bootstrap_button button_type="submit" content="Подтвердить" %}
+            <div class="row g-3 justify-content-center">
+                <div class="col-md-auto">
+                <div class="mb-3">
+                    <p class="text-dark">{{ form.delivery_time.label }}</p>
+                    {{ form.delivery_time }}
+                </div>
+                <div class="mb-3">
+                    <p class="text-dark">{{ form.order_comment.label }}</p>
+                    {{ form.order_comment }}
+                </div>
+                <div class="mb-3">
+                    <p class="text-dark">{{ form.address.label }}</p>
+                    {{ form.address }}
+                </div>
+                <input class="button btn-primary" type="submit" value="Submit">
+            </div>
+            </div>
         </form>
     {% endif %}
 </div>
 </div>
+
 {% endblock %}
+{% block bottom_js %}
+{% endblock %}
+
+{% comment %}
+            <div class="row">
+                <div class="col-md-12">
+                    {{ user_form.username }}
+                </div>
+                <div class="col-md-12">
+                    {{ user_form.password }}
+                </div><!-- /.col-md-6 -->
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}"/>
+                <div class="col-12 text-center">
+                    <input type="submit" class="btn btn-primary" name="submit" />
+                </div><!-- /.col-md-6 -->
+            </div><!-- /.row -->
+{% endcomment %}
