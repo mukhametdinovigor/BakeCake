@@ -1,10 +1,10 @@
 {% load static %}
 
-  <nav class="navbar navbar-expand-md navbar-light bg-light navbar-fixed-top">
+  <nav class="navbar navbar-expand-md navbar-light bg-light navbar-fixed-top border-0">
     <div class="container">
-      	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
           data-bs-target="#navmenu">
-          <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
       </button>
   			<a href="{% url 'index' %}" title="BakeCake">
             <img class="img-responsive" src="{% static 'images/logo.png' %}" alt="BakeCake"/>
@@ -14,33 +14,33 @@
           <ul class="navbar-nav navbar-right">
 
             <li class="nav-item">
-              <a href="{% url 'index' %}" class="nav-link">
+              <a href="{% url 'index' %}" class="nav-link text-dark">
                    Добро пожаловать {{ user }} |
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="{% url 'account' %}" class="nav-link">
+              <a href="{% url 'account' %}" class="nav-link text-dark">
                   Личный кабинет |
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="{% url 'logout' %}" class="nav-link">
-                  Выход|
+              <a href="{% url 'logout' %}" class="nav-link text-dark">
+                  Выход
               </a>
             </li>
           </ul>
         {% else %}
           <ul class="navbar-nav navbar-right">
             <li class="nav-item">
-              <a href="{% url 'login' %}" class="nav-link">
+              <a href="{% url 'login' %}" class="nav-link text-dark">
                   Вход |
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'signup' %}" class="nav-link">
-                  Регистрация |
+              <a href="{% url 'signup' %}" class="nav-link text-dark">
+                  Регистрация
               </a>
             </li>
           </ul>
