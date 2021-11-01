@@ -241,3 +241,25 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Заказ {self.customer.first_name} {self.customer.last_name} {self.created_at}'
+
+
+class Promo(models.Model):
+    title = models.CharField(
+        'наименование',
+        max_length=20,
+        blank=True,
+        null=True,
+    )
+    value = models.IntegerField(
+        'значение',
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = 'промокоды'
+        verbose_name_plural = 'промокоды'
+
+    def __str__(self):
+        return f'{self.title}'
+

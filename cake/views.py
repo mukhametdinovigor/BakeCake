@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
-from django.db.models import Sum, F
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
@@ -116,6 +116,7 @@ def confirm(request):
         delivery_time = additional_form.cleaned_data.get('delivery_time')
         comment = additional_form.cleaned_data.get('order_comment')
         address = additional_form.cleaned_data.get('address')
+        promo = additional_form.cleaned_data.get('promo')
         order, created = Order.objects.get_or_create(
             delivery_time=delivery_time,
             comment=comment,
@@ -127,8 +128,20 @@ def confirm(request):
         customer.save()
         if delivery_time - order.created_at < timedelta(1):
             surcharge = round(cake_price * 0.2, 2)
+        try:
+            promo_value = Promo.objects.get(title=promo).value
+        except ObjectDoesNotExist:
+            promo_value = 0
+        if promo_value:
+            discount_value = round(cake_price * promo_value / 100, 2)
+        else:
+            discount_value = 0
+        total_cake_price = cake_price + surcharge - discount_value
         return render(request, 'confirmation.html', {'cake_price': cake_price,
-                                                     'surcharge': surcharge
+                                                     'surcharge': surcharge,
+                                                     'promo_value': promo_value,
+                                                     'discount_value': discount_value,
+                                                     'total_cake_price': total_cake_price
                                                      })
     else:
         return render(request, 'adv_order_info.html', {'form': additional_form,

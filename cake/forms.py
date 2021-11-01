@@ -52,6 +52,12 @@ class AdvancedInfoForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         initial='',
     )
+    promo = forms.CharField(
+        label='Промокод',
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False,
+    )
 
     def clean_delivery_time(self):
         delivery_time = super(AdvancedInfoForm, self).clean().get('delivery_time')

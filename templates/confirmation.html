@@ -4,7 +4,8 @@
     <div class="col-md-3 text-center">
         <h4>Стоимость торта - {{ cake_price }}</h4>
         <h4>Наценка за срочный заказ - {{ surcharge }}</h4>
-        <h3>Общая стоимость заказа - {{ cake_price|add:surcharge }}
+        <h4>Скидка за промокод {{ promo_value }}% - {{ discount_value }}</h4>
+        <h3>Общая стоимость заказа - {{ total_cake_price}}
         <h1> Ваш заказ принят </h1>
         <div class="btn-group" role="group">
             <form action="{% url 'index' %}">

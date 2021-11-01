@@ -8,7 +8,7 @@ from django.db.models.functions import TruncDay
 from import_export import resources
 from import_export.admin import ExportMixin
 from .models import (
-    Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order, STATUS
+    Level, Shape, Topping, Berry, AdditionalIngredient, Cake, Customer, Order, STATUS, Promo
 )
 
 
@@ -29,6 +29,11 @@ class ToppingAdmin(admin.ModelAdmin):
 
 @admin.register(Berry)
 class BerryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Promo)
+class PromoAdmin(admin.ModelAdmin):
     pass
 
 

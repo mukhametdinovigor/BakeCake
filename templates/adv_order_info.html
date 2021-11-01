@@ -48,7 +48,6 @@
                     {{ form.delivery_time }}
                     {% endif %}
                 </div>
-                    <br>
                     <script>
                       $(function () {
                         $("#id_delivery_time").datetimepicker({
@@ -61,12 +60,14 @@
                     <h4 class="text-dark" align="left">{{ form.address.label }}</h4>
                     {{ form.address }}
                 </div>
-                    <br>
                 <div class="mb-3">
                     <h4 class="text-dark" align="left">{{ form.order_comment.label }}</h4>
                     {{ form.order_comment }}
                 </div>
-                    <br>
+                <div class="mb-3">
+                    <h4 class="text-dark" align="left">{{ form.promo.label }}</h4>
+                    {{ form.promo }}
+                </div>
                 <input class="button btn-primary" type="submit" value="Подтвердить">
             </div>
             </div>
