@@ -1,25 +1,44 @@
 {% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
 {% block content %}
-<div class="row d-flex justify-content-center align-items-center">
-    <div class="col-md-3 text-center">
-        <h4>Стоимость торта - {{ cake_price }}</h4>
-        <h4>Наценка за срочный заказ - {{ surcharge }}</h4>
-        <h4>Скидка за промокод {{ promo_value }}% - {{ discount_value }}</h4>
-        <h3>Общая стоимость заказа - {{ total_cake_price}}
-        <h1> Ваш заказ принят </h1>
-        <div class="btn-group" role="group">
-            <form action="{% url 'index' %}">
-                <div  class="page-header" id="contact">
-                    <button type="submit" class="btn btn-info">Перейти на главную</button>
-                </div>
-            </form>
+<div class="container">
+    <div class="row">
+        <div class="col">
         </div>
-        <div class="btn-group" role="group">
-            <form action="{% url 'account' %}">
-                <div  class="page-header" id="contact">
-                    <button type="submit" class="btn btn-info">Перейти в личный кабинет</button>
-                </div>
-            </form>
+
+        <div class="col-6" >
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <h3 class="text-dark">Стоимость торта - {{ cake_price }}</h3>
+            <h3 class="text-dark">Наценка за срочный заказ - {{ surcharge }}</h3>
+            {% if promo_value %}
+            <h3 class="text-dark">Скидка за промокод {{ promo_value }}% - {{ discount_value }}</h3>
+            {% endif %}
+            <h2 class="text-danger">Общая стоимость заказа - {{ total_cake_price}}
+            <div class="btn-group" role="group">
+                <form action="{% url 'index' %}">
+                    <div  class="page-header" id="contact">
+                        {% bootstrap_button button_type="submit" content="Перейти на главную" %}
+
+                    </div>
+                </form>
+            </div>
+            <div class="btn-group" role="group">
+                <form action="{% url 'account' %}">
+                    <div  class="page-header" id="contact">
+                        {% bootstrap_button button_type="submit" content="Перейти в личный кабинет" %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col">
         </div>
     </div>
 </div>

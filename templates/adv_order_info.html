@@ -16,22 +16,36 @@
 {% block content %}
 <div class="row justify-content-center">
 <div class="col-md-4 text-center">
-    <h1 class="text-danger"> Стоимость торта - {{ cake_price }}</h1>
-    <h3 class="text-dark">Если доставка в ближайшие 24 часа, то стоимость заказа будет на 20% больше. </h3>
+    <h1 class="text-danger" align="left"> Стоимость торта - {{ cake_price }}</h1>
+    <h3 class="text-dark" align="left">Если доставка в ближайшие 24 часа, то стоимость заказа будет на 20% больше. </h3>
     <form action="{% url 'index' %}">
-        <div  class="page-header" id="contact">
+        <div  class="page-header" id="contact" align="left">
             {% bootstrap_button button_type="submit" content="Выбрать торт заново" %}
         </div>
     </form>
-    {% if not user.is_authenticated %}
-        <h1 class="text-danger">Чтобы сделать заказ зарегистрируйтесь или войдите</h1>
-         <form action="{% url 'signup' %}" >
-            <button type="submit" class="btn btn-info">Регистрация</button>
-        </form>
+<br>
+<br>
+<br>
+<br>
 
-        <form action="{% url 'login' %}" >
-            <button type="submit" class="btn btn-info">Вход</button>
-        </form>
+    {% if not user.is_authenticated %}
+        <h1 class="text-danger" align="left">Для заказа зарегистрируйтесь или войдите</h1>
+            <br>
+            <br>
+            <div class="row" align="left">
+                <div class="col text-dark">
+                    <form action="{% url 'signup' %}" >
+                    {% bootstrap_button button_type="submit" content="Регистрация" %}
+                    </form>
+                </div>
+
+                <div class="col text-dark">
+                     <form action="{% url 'login' %}" >
+                     {% bootstrap_button button_type="submit" content="Вход" %}
+                     </form>
+                </div>
+            </div>
+
     {% else %}
     {% bootstrap_messages %}
         <h1 class="text-danger text-center">Дополнительная информация</h1>

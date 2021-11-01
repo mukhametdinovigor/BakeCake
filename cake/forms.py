@@ -23,12 +23,12 @@ def create_choices(elements, model):
 
 class ConstructCakeForm(forms.Form):
     elements = create_elements()
-    levels = forms.ChoiceField(label='Форма уровней', choices=create_choices(elements, Level), widget=forms.RadioSelect)
+    levels = forms.ChoiceField(label='Стоимость уровней', choices=create_choices(elements, Level), widget=forms.RadioSelect)
     shapes = forms.ChoiceField(label='Форма уровней', choices=create_choices(elements, Shape), widget=forms.RadioSelect)
     toppings = forms.ChoiceField(label='Топпинг', choices=create_choices(elements, Topping), widget=forms.RadioSelect)
     berries = forms.MultipleChoiceField(label='Ягоды', required=False, choices=create_choices(elements, Berry), widget=forms.CheckboxSelectMultiple)
     decor = forms.MultipleChoiceField(label='Декор', required=False, choices=create_choices(elements, AdditionalIngredient), widget=forms.CheckboxSelectMultiple)
-    lettering = forms.CharField(label='Мы можем разместить на торте любую надпись, например: «С днем рождения!»', required=False, max_length=500)
+    lettering = forms.CharField(label='Надпись на торте', required=False, max_length=500)
 
 
 class AdvancedInfoForm(forms.Form):

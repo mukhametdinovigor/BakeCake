@@ -51,13 +51,51 @@
             <h1 class=" display-3 text-danger text-center"><strong>Создай свой торт</strong></h1>
 	        </div>
           <div class="row justify-content-center">
-            <div class="col-md-4 align-self-center text-dark" style="font-size: 1.6rem;">
-                {{ form }}
+{#            <div class="col-md-4 align-self-center text-dark" style="font-size: 1.6rem;">#}
+
+              <div class="container">
+              <div class="row">
+                <div class="col text-dark">
+                    <h3 class="text-dark" align="left">{{ form.levels.label }}</h3>
+                    <br>
+                    {{ form.levels }}
+                </div>
+                <div class="col text-dark">
+                    <h3 class="text-dark" align="left">{{ form.shapes.label }}</h3>
+                    <br>
+                    {{ form.shapes }}
+                </div>
+                <div class="col text-dark">
+                    <h3 class="text-dark " align="left">{{ form.toppings.label }}</h3>
+                    <br>
+                    {{ form.toppings }}
+                </div>
+                <div class="w-100"></div>
+                <div class="col text-dark">
+                    <h3 class="text-dark " align="left">{{ form.berries.label }}</h3>
+                    <br>
+                    {{ form.berries }}
+                </div>
+                <div class="col text-dark">
+                    <h3 class="text-dark " align="left">{{ form.lettering.label }}</h3>
+                    <br>
+                    <div class="container-fluid">
+                    {{ form.lettering }}
+                    </div>
+                </div>
+                <div class="col text-dark">
+                    <h3 class="text-dark " align="left">{{ form.decor.label }}</h3>
+                    <br>
+                    {{ form.decor }}
+                </div>
+              </div>
             </div>
-          <div class="text-center mb-3">{% bootstrap_button button_type="submit" content="Торт готов" %}</div>
+                <br>
+                <br>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Торт готов</button>
+            </div>
 	        </div>
 		    </div>
-			</div>
 		</form>
 	</div>
 </div>
