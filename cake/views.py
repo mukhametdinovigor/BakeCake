@@ -56,7 +56,8 @@ def index(request):
 def advanced_info(request):
     if request.user.pk:
         customer = get_object_or_404(Customer, id=request.user.id)
-        advanced_form = AdvancedInfoForm(initial={'address': customer.address})
+        advanced_form = AdvancedInfoForm(initial={'address': customer.address,
+                                                  'delivery_time': 'дата и время доставки'})
     else:
         advanced_form = AdvancedInfoForm()
     if not request.session.session_key:
